@@ -203,3 +203,13 @@ void main() {
     });
   });
 }
+
+
+  group('UnitConverter - boundary precision tests', () {
+    test('handles 0.1 kg exactness', () {
+      expect(UnitConverter.displayWeight(0.1, 'kg'), 0.1);
+    });
+    test('handles 500 kg heavy deadlift', () {
+      expect(UnitConverter.displayWeight(500, 'kg'), 500.0);
+    });
+  });
