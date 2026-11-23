@@ -229,3 +229,13 @@ void main() {
       expect(UnitConverter.lbsToKg(405), closeTo(183.705, 0.01));
     });
   });
+
+
+  group('UnitConverter - formatting edge cases', () {
+    test('formats very large volumes with commas', () {
+      expect(UnitConverter.formatVolume(10000000, 'kg'), '10,000,000 kg');
+    });
+    test('formats 0.0 kg without decimal when integer', () {
+      expect(UnitConverter.formatWeight(0.0, 'kg'), '0 kg');
+    });
+  });
