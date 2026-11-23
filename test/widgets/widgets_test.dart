@@ -302,3 +302,18 @@ void main() {
       expect(find.textContaining('lbs'), findsOneWidget);
     });
   });
+
+
+  group('MetricCard - custom colors', () {
+    testWidgets('renders custom icon color', (tester) async {
+      await tester.pumpWidget(_wrap(
+        const MetricCard(
+          title: 'Streak',
+          value: '5 Weeks',
+          icon: Icons.local_fire_department,
+          iconColor: Colors.deepOrange,
+        ),
+      ));
+      expect(find.text('Streak'), findsOneWidget);
+    });
+  });
