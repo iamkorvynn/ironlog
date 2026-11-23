@@ -310,3 +310,33 @@ void main() {
       expect(s.progress, 0.0);
     });
   });
+
+
+  group('ExportData - nested workout trees', () {
+    test('preserves exercises and sets through export and import', () {
+      final export = ExportData(
+        exportedAt: DateTime.now(),
+        exercises: [
+          Exercise(id: 'e1', name: 'Leg Press', muscleGroup: 'Legs', createdAt: DateTime.now()),
+        ],
+        workouts: [
+          Workout(
+            id: 'w1', name: 'Leg Day', startTime: DateTime.now(),
+            exercises: [
+              const WorkoutExercise(
+                id: 'we1', workoutId: 'w1', exerciseId: 'e1', exerciseName: 'Leg Press', muscleGroup: 'Legs', orderIndex: 0,
+                sets: [
+                  WorkoutSet(id: 's1', workoutExerciseId: 'we1', setOrder: 1, weightKg: 200, reps: 10, isCompleted: true),
+                ],
+              ),
+            ],
+          ),
+        ],
+        personalRecords: [],
+        settings: const UserSettings(),
+      );
+      final json = export.toJson();
+      final revived = ExportData.fromJson(json);
+      expect(revived.workouts.first.exercises.first.sets.first.weightKg, 200.0);
+    });
+  });
