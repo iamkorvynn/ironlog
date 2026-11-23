@@ -145,3 +145,12 @@ void main() {
       expect(find.byIcon(Icons.refresh), findsOneWidget);
     });
   });
+
+
+  group('ExercisesScreen - search bar', () {
+    testWidgets('contains search text field', (tester) async {
+      await tester.pumpWidget(_wrap(const ExercisesScreen()));
+      await tester.pumpAndSettle();
+      expect(find.byType(TextField), findsOneWidget);
+    });
+  });
