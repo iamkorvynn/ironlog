@@ -369,3 +369,17 @@ void main() {
       expect(find.text('KG'), findsOneWidget);
     });
   });
+
+
+  group('ExerciseCard - custom badge', () {
+    testWidgets('shows Custom chip for custom exercises', (tester) async {
+      final custom = Exercise(
+        id: 'c1', name: 'Face Pull', muscleGroup: 'Shoulders', isCustom: true, createdAt: DateTime.now(),
+      );
+      await tester.pumpWidget(_wrap(
+        ExerciseCard(exercise: custom, unit: 'kg', onTap: () {}),
+      ));
+      expect(find.text('Face Pull'), findsOneWidget);
+      expect(find.text('Custom'), findsOneWidget);
+    });
+  });
