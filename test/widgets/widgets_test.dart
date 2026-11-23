@@ -359,3 +359,13 @@ void main() {
       expect(find.text('Delete Forever'), findsOneWidget);
     });
   });
+
+
+  group('UnitToggleSwitch - initial selection', () {
+    testWidgets('starts with kg selected', (tester) async {
+      await tester.pumpWidget(_wrap(
+        UnitToggleSwitch(currentUnit: 'kg', onChanged: (_) {}),
+      ));
+      expect(find.text('KG'), findsOneWidget);
+    });
+  });
