@@ -398,3 +398,12 @@ void main() {
       expect(find.textContaining('Bench, Squat'), findsOneWidget);
     });
   });
+
+
+  group('StreakBanner - styling', () {
+    testWidgets('displays fire icon', (tester) async {
+      const streak = StreakInfo(currentWeeklyStreak: 2, longestWeeklyStreak: 2, currentDayStreak: 1, totalWorkouts: 4, totalVolumeKg: 10000);
+      await tester.pumpWidget(_wrap(const StreakBanner(streakInfo: streak)));
+      expect(find.byIcon(Icons.local_fire_department_rounded), findsOneWidget);
+    });
+  });
