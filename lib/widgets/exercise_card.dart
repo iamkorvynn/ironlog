@@ -122,3 +122,6 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 }
+
+
+// 16dp rounded corner cards
