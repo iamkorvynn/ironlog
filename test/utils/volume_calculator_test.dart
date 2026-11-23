@@ -175,3 +175,18 @@ void main() {
     });
   });
 }
+
+
+  group('VolumeCalculator - 5x5 compound volume', () {
+    test('calculates standard 5x5 volume (5 sets of 5 reps at 100kg = 2500kg)', () {
+      const sets = [
+        WorkoutSet(id: 's1', workoutExerciseId: 'w', setOrder: 1, weightKg: 100, reps: 5, isCompleted: true),
+        WorkoutSet(id: 's2', workoutExerciseId: 'w', setOrder: 2, weightKg: 100, reps: 5, isCompleted: true),
+        WorkoutSet(id: 's3', workoutExerciseId: 'w', setOrder: 3, weightKg: 100, reps: 5, isCompleted: true),
+        WorkoutSet(id: 's4', workoutExerciseId: 'w', setOrder: 4, weightKg: 100, reps: 5, isCompleted: true),
+        WorkoutSet(id: 's5', workoutExerciseId: 'w', setOrder: 5, weightKg: 100, reps: 5, isCompleted: true),
+      ];
+      const ex = WorkoutExercise(id: 'w', workoutId: 'w', exerciseId: 'e', exerciseName: 'Squat', muscleGroup: 'Legs', orderIndex: 0, sets: sets);
+      expect(VolumeCalculator.calculateExerciseVolume(ex), 2500.0);
+    });
+  });
