@@ -81,3 +81,12 @@ void main() {
     });
   });
 }
+
+
+  group('RestDayAdvisor - extended workload scenarios', () {
+    test('advises rest when 5 workouts in past 7 days', () {
+      final now = DateTime.now();
+      final workouts = List.generate(5, (i) => Workout(id: 'w$i', name: 'W$i', startTime: now.subtract(Duration(days: i))));
+      expect(RestDayAdvisor.shouldRestToday(workouts), isTrue);
+    });
+  });
