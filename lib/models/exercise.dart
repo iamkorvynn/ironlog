@@ -56,4 +56,40 @@ class Exercise {
       createdAt: DateTime.parse(map['created_at'] as String),
     );
   }
+
+  static List<Exercise> getBuiltInExercises() {
+    final now = DateTime(2026, 11, 23);
+    return AppConstants.builtInExercises.map((def) {
+      return Exercise(
+        id: def.id,
+        name: def.name,
+        muscleGroup: def.muscleGroup,
+        notes: def.notes,
+        isCustom: false,
+        createdAt: now,
+      );
+    }).toList();
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Exercise &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          muscleGroup == other.muscleGroup &&
+          notes == other.notes &&
+          isCustom == other.isCustom;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      muscleGroup.hashCode ^
+      notes.hashCode ^
+      isCustom.hashCode;
+
+  @override
+  String toString() => 'Exercise($id, $name, $muscleGroup)';
 }
