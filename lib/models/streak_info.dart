@@ -24,3 +24,6 @@ class StreakInfo {
     lastWorkoutDate: null,
   );
 }
+
+
+// Immutable model verified
