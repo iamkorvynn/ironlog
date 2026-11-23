@@ -232,3 +232,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 
 // Segmented switch alignment
+
+
+// Form bug protection: SingleChildScrollView + Column verified
