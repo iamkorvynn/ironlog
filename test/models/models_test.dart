@@ -275,3 +275,14 @@ void main() {
       expect(w.calculateTotalReps(), 22);
     });
   });
+
+
+  group('PersonalRecord - recordType labels', () {
+    test('formats maxVolume record type label', () {
+      final pr = PersonalRecord(
+        id: '1', exerciseId: 'e', exerciseName: 'Deadlift', workoutId: 'w',
+        recordType: 'maxVolume', value: 5000, weightKg: 200, reps: 5, achievedAt: DateTime.now(),
+      );
+      expect(pr.recordTypeLabel, 'Max Volume');
+    });
+  });
