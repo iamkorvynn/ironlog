@@ -191,3 +191,6 @@ class _SetRowWidgetState extends State<SetRowWidget> {
     );
   }
 }
+
+
+// 48dp minimum accessible touch target
