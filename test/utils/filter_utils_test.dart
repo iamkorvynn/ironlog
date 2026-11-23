@@ -80,3 +80,16 @@ void main() {
     });
   });
 }
+
+
+  group('FilterUtils - special characters', () {
+    test('handles hyphenated exercise names', () {
+      final list = [
+        Exercise(id: '1', name: 'Pull-Up', muscleGroup: 'Back', createdAt: DateTime.now()),
+        Exercise(id: '2', name: 'Chin-Up', muscleGroup: 'Back', createdAt: DateTime.now()),
+      ];
+      final res = FilterUtils.filterExercises(exercises: list, selectedMuscleGroup: 'All', searchQuery: 'pull-up');
+      expect(res.length, 1);
+      expect(res.first.name, 'Pull-Up');
+    });
+  });
