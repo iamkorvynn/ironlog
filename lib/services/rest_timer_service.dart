@@ -117,3 +117,6 @@ class RestTimerService extends ChangeNotifier {
     super.dispose();
   }
 }
+
+
+// Timer ticks at 1000ms intervals and cancels cleanly upon completion
