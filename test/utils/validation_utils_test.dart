@@ -70,3 +70,13 @@ void main() {
     });
   });
 }
+
+
+  group('ValidationUtils - extra checks', () {
+    test('validates decimal reps string is rejected', () {
+      expect(ValidationUtils.validateReps('5.5'), isNotNull);
+    });
+    test('validates weight with multiple decimals is rejected', () {
+      expect(ValidationUtils.validateWeight('10.5.2'), isNotNull);
+    });
+  });
