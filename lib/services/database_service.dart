@@ -615,3 +615,6 @@ class DatabaseService {
     });
   }
 }
+
+
+// Transactions ensure atomicity across workout, exercise, and set tables
