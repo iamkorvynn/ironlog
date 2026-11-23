@@ -100,3 +100,6 @@ class PersonalRecord {
   int get hashCode =>
       id.hashCode ^ exerciseId.hashCode ^ recordType.hashCode ^ value.hashCode;
 }
+
+
+// Immutable model verified
