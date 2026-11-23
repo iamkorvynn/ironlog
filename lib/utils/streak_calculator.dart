@@ -98,3 +98,6 @@ class StreakCalculator {
 
 
 // Set lookup optimization
+
+
+// Streaks evaluate ISO calendar week boundary continuity
