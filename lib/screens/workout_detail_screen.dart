@@ -135,7 +135,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                       VolumeChip(volumeKg: w.totalVolumeKg, unit: unit),
                       const SizedBox(width: 10),
                       Text(
-                        '\${w.totalSets} completed sets • \${w.totalReps} total reps',
+                        '${w.totalSets} completed sets • ${w.totalReps} total reps',
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppTheme.textSecondary,
@@ -188,7 +188,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                         const PrBadge(label: 'PR'),
                         const SizedBox(width: 6),
                         Text(
-                          '\${pr.exerciseName}: \${UnitConverter.formatWeight(pr.value, unit)} (\${pr.recordTypeLabel})',
+                          '${pr.exerciseName}: ${UnitConverter.formatWeight(pr.value, unit)} (${pr.recordTypeLabel})',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -246,21 +246,21 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                 MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Set \${s.setOrder}',
+                                'Set ${s.setOrder}',
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: AppTheme.textSecondary,
                                 ),
                               ),
                               Text(
-                                '\${UnitConverter.formatWeight(s.weightKg, unit)} × \${s.reps} reps',
+                                '${UnitConverter.formatWeight(s.weightKg, unit)} × ${s.reps} reps',
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
-                                '1RM: \${UnitConverter.formatWeight(s.estimated1Rm, unit)}',
+                                '1RM: ${UnitConverter.formatWeight(s.estimated1Rm, unit)}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: AppTheme.primaryOrangeLight,

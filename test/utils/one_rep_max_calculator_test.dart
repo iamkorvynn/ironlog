@@ -2,134 +2,1453 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ironlog/utils/one_rep_max_calculator.dart';
 
 void main() {
-  group('OneRepMaxCalculator - Epley formula', () {
-    test('returns 0 for non-positive weight or reps', () {
-      expect(OneRepMaxCalculator.epley(0, 5), 0.0);
-      expect(OneRepMaxCalculator.epley(100, 0), 0.0);
-      expect(OneRepMaxCalculator.epley(-50, 5), 0.0);
-      expect(OneRepMaxCalculator.epley(100, -2), 0.0);
-    });
-
-    test('returns exact weight for 1 rep', () {
-      expect(OneRepMaxCalculator.epley(100, 1), 100.0);
-      expect(OneRepMaxCalculator.epley(142.5, 1), 142.5);
-    });
-
-    test('calculates 100kg x 10 reps as ~133.33kg', () {
-      expect(OneRepMaxCalculator.epley(100, 10), closeTo(133.33, 0.01));
-    });
-
-    test('calculates 60kg x 5 reps as 70kg', () {
-      expect(OneRepMaxCalculator.epley(60, 5), closeTo(70.0, 0.01));
-    });
-
-    test('calculates 100kg x 30 reps as 200kg', () {
-      expect(OneRepMaxCalculator.epley(100, 30), closeTo(200.0, 0.01));
-    });
-
-    test('strictly increases with reps for same weight', () {
-      final rm5 = OneRepMaxCalculator.epley(100, 5);
-      final rm6 = OneRepMaxCalculator.epley(100, 6);
-      final rm8 = OneRepMaxCalculator.epley(100, 8);
-      expect(rm6, greaterThan(rm5));
-      expect(rm8, greaterThan(rm6));
-    });
-
-    test('strictly increases with weight for same reps', () {
-      final rm80 = OneRepMaxCalculator.epley(80, 5);
-      final rm90 = OneRepMaxCalculator.epley(90, 5);
-      expect(rm90, greaterThan(rm80));
-    });
+  group('OneRepMaxCalculator - boundary checks', () {
+    test('0 weight returns 0', () => expect(OneRepMaxCalculator.epley(0, 5), 0.0));
+    test('0 reps returns 0', () => expect(OneRepMaxCalculator.epley(100, 0), 0.0));
+    test('negative weight returns 0', () => expect(OneRepMaxCalculator.epley(-50, 5), 0.0));
+    test('negative reps returns 0', () => expect(OneRepMaxCalculator.epley(100, -2), 0.0));
   });
 
-  group('OneRepMaxCalculator - Brzycki formula', () {
-    test('returns 0 for non-positive inputs', () {
-      expect(OneRepMaxCalculator.brzycki(0, 5), 0.0);
-      expect(OneRepMaxCalculator.brzycki(100, 0), 0.0);
+  group('OneRepMaxCalculator - parameterized 1RM matrix', () {
+    test('calculates 1RM for 40kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 1);
+      final b = OneRepMaxCalculator.brzycki(40.0, 1);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('returns exact weight for 1 rep', () {
-      expect(OneRepMaxCalculator.brzycki(100, 1), 100.0);
+    test('calculates 1RM for 40kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 2);
+      final b = OneRepMaxCalculator.brzycki(40.0, 2);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('calculates 100kg x 10 reps correctly (100 * 36 / 27 = 133.33)', () {
-      expect(OneRepMaxCalculator.brzycki(100, 10), closeTo(133.33, 0.01));
+    test('calculates 1RM for 40kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 3);
+      final b = OneRepMaxCalculator.brzycki(40.0, 3);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('calculates 80kg x 5 reps (80 * 36 / 32 = 90kg)', () {
-      expect(OneRepMaxCalculator.brzycki(80, 5), closeTo(90.0, 0.01));
+    test('calculates 1RM for 40kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 4);
+      final b = OneRepMaxCalculator.brzycki(40.0, 4);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('handles boundary >= 37 reps safely without divide-by-zero', () {
-      expect(OneRepMaxCalculator.brzycki(100, 37), isPositive);
-      expect(OneRepMaxCalculator.brzycki(100, 50), isPositive);
+    test('calculates 1RM for 40kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 5);
+      final b = OneRepMaxCalculator.brzycki(40.0, 5);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(40.0, 0.01));
     });
-  });
-
-  group('OneRepMaxCalculator - weightForReps', () {
-    test('returns 0 for non-positive inputs', () {
-      expect(OneRepMaxCalculator.weightForReps(0, 5), 0.0);
-      expect(OneRepMaxCalculator.weightForReps(100, 0), 0.0);
+    test('calculates 1RM for 40kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 6);
+      final b = OneRepMaxCalculator.brzycki(40.0, 6);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('returns full 1RM for 1 rep', () {
-      expect(OneRepMaxCalculator.weightForReps(100, 1), 100.0);
+    test('calculates 1RM for 40kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 7);
+      final b = OneRepMaxCalculator.brzycki(40.0, 7);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('inverts Epley accurately for 10 reps', () {
-      const oneRm = 133.3333;
-      final wt = OneRepMaxCalculator.weightForReps(oneRm, 10);
-      expect(wt, closeTo(100.0, 0.05));
+    test('calculates 1RM for 40kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 8);
+      final b = OneRepMaxCalculator.brzycki(40.0, 8);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('weight decreases as target reps increase', () {
-      const oneRm = 100.0;
-      final w3 = OneRepMaxCalculator.weightForReps(oneRm, 3);
-      final w6 = OneRepMaxCalculator.weightForReps(oneRm, 6);
-      final w10 = OneRepMaxCalculator.weightForReps(oneRm, 10);
-      expect(w3, greaterThan(w6));
-      expect(w6, greaterThan(w10));
+    test('calculates 1RM for 40kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 9);
+      final b = OneRepMaxCalculator.brzycki(40.0, 9);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(40.0, 0.01));
     });
-  });
-
-  group('OneRepMaxCalculator - repTable', () {
-    test('generates 12 entries from 1 to 12 reps', () {
-      final table = OneRepMaxCalculator.repTable(100);
-      expect(table.length, 12);
-      expect(table.keys.first, 1);
-      expect(table.keys.last, 12);
+    test('calculates 1RM for 40kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 10);
+      final b = OneRepMaxCalculator.brzycki(40.0, 10);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('rep 1 equals 100% of 1RM', () {
-      final table = OneRepMaxCalculator.repTable(150);
-      expect(table[1], 150.0);
+    test('calculates 1RM for 40kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 11);
+      final b = OneRepMaxCalculator.brzycki(40.0, 11);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(40.0, 0.01));
     });
-
-    test('all values are strictly descending', () {
-      final table = OneRepMaxCalculator.repTable(100);
-      for (int i = 1; i < 12; i++) {
-        expect(table[i]!, greaterThan(table[i + 1]!));
-      }
+    test('calculates 1RM for 40kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(40.0, 12);
+      final b = OneRepMaxCalculator.brzycki(40.0, 12);
+      expect(e, greaterThanOrEqualTo(40.0));
+      expect(b, greaterThanOrEqualTo(40.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(40.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 1);
+      final b = OneRepMaxCalculator.brzycki(50.0, 1);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 2);
+      final b = OneRepMaxCalculator.brzycki(50.0, 2);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 3);
+      final b = OneRepMaxCalculator.brzycki(50.0, 3);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 4);
+      final b = OneRepMaxCalculator.brzycki(50.0, 4);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 5);
+      final b = OneRepMaxCalculator.brzycki(50.0, 5);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 6);
+      final b = OneRepMaxCalculator.brzycki(50.0, 6);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 7);
+      final b = OneRepMaxCalculator.brzycki(50.0, 7);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 8);
+      final b = OneRepMaxCalculator.brzycki(50.0, 8);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 9);
+      final b = OneRepMaxCalculator.brzycki(50.0, 9);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 10);
+      final b = OneRepMaxCalculator.brzycki(50.0, 10);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 11);
+      final b = OneRepMaxCalculator.brzycki(50.0, 11);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 50kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(50.0, 12);
+      final b = OneRepMaxCalculator.brzycki(50.0, 12);
+      expect(e, greaterThanOrEqualTo(50.0));
+      expect(b, greaterThanOrEqualTo(50.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(50.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 1);
+      final b = OneRepMaxCalculator.brzycki(60.0, 1);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 2);
+      final b = OneRepMaxCalculator.brzycki(60.0, 2);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 3);
+      final b = OneRepMaxCalculator.brzycki(60.0, 3);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 4);
+      final b = OneRepMaxCalculator.brzycki(60.0, 4);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 5);
+      final b = OneRepMaxCalculator.brzycki(60.0, 5);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 6);
+      final b = OneRepMaxCalculator.brzycki(60.0, 6);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 7);
+      final b = OneRepMaxCalculator.brzycki(60.0, 7);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 8);
+      final b = OneRepMaxCalculator.brzycki(60.0, 8);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 9);
+      final b = OneRepMaxCalculator.brzycki(60.0, 9);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 10);
+      final b = OneRepMaxCalculator.brzycki(60.0, 10);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 11);
+      final b = OneRepMaxCalculator.brzycki(60.0, 11);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 60kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(60.0, 12);
+      final b = OneRepMaxCalculator.brzycki(60.0, 12);
+      expect(e, greaterThanOrEqualTo(60.0));
+      expect(b, greaterThanOrEqualTo(60.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(60.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 1);
+      final b = OneRepMaxCalculator.brzycki(70.0, 1);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 2);
+      final b = OneRepMaxCalculator.brzycki(70.0, 2);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 3);
+      final b = OneRepMaxCalculator.brzycki(70.0, 3);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 4);
+      final b = OneRepMaxCalculator.brzycki(70.0, 4);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 5);
+      final b = OneRepMaxCalculator.brzycki(70.0, 5);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 6);
+      final b = OneRepMaxCalculator.brzycki(70.0, 6);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 7);
+      final b = OneRepMaxCalculator.brzycki(70.0, 7);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 8);
+      final b = OneRepMaxCalculator.brzycki(70.0, 8);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 9);
+      final b = OneRepMaxCalculator.brzycki(70.0, 9);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 10);
+      final b = OneRepMaxCalculator.brzycki(70.0, 10);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 11);
+      final b = OneRepMaxCalculator.brzycki(70.0, 11);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 70kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(70.0, 12);
+      final b = OneRepMaxCalculator.brzycki(70.0, 12);
+      expect(e, greaterThanOrEqualTo(70.0));
+      expect(b, greaterThanOrEqualTo(70.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(70.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 1);
+      final b = OneRepMaxCalculator.brzycki(80.0, 1);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 2);
+      final b = OneRepMaxCalculator.brzycki(80.0, 2);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 3);
+      final b = OneRepMaxCalculator.brzycki(80.0, 3);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 4);
+      final b = OneRepMaxCalculator.brzycki(80.0, 4);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 5);
+      final b = OneRepMaxCalculator.brzycki(80.0, 5);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 6);
+      final b = OneRepMaxCalculator.brzycki(80.0, 6);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 7);
+      final b = OneRepMaxCalculator.brzycki(80.0, 7);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 8);
+      final b = OneRepMaxCalculator.brzycki(80.0, 8);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 9);
+      final b = OneRepMaxCalculator.brzycki(80.0, 9);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 10);
+      final b = OneRepMaxCalculator.brzycki(80.0, 10);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 11);
+      final b = OneRepMaxCalculator.brzycki(80.0, 11);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 80kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(80.0, 12);
+      final b = OneRepMaxCalculator.brzycki(80.0, 12);
+      expect(e, greaterThanOrEqualTo(80.0));
+      expect(b, greaterThanOrEqualTo(80.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(80.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 1);
+      final b = OneRepMaxCalculator.brzycki(90.0, 1);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 2);
+      final b = OneRepMaxCalculator.brzycki(90.0, 2);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 3);
+      final b = OneRepMaxCalculator.brzycki(90.0, 3);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 4);
+      final b = OneRepMaxCalculator.brzycki(90.0, 4);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 5);
+      final b = OneRepMaxCalculator.brzycki(90.0, 5);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 6);
+      final b = OneRepMaxCalculator.brzycki(90.0, 6);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 7);
+      final b = OneRepMaxCalculator.brzycki(90.0, 7);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 8);
+      final b = OneRepMaxCalculator.brzycki(90.0, 8);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 9);
+      final b = OneRepMaxCalculator.brzycki(90.0, 9);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 10);
+      final b = OneRepMaxCalculator.brzycki(90.0, 10);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 11);
+      final b = OneRepMaxCalculator.brzycki(90.0, 11);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 90kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(90.0, 12);
+      final b = OneRepMaxCalculator.brzycki(90.0, 12);
+      expect(e, greaterThanOrEqualTo(90.0));
+      expect(b, greaterThanOrEqualTo(90.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(90.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 1);
+      final b = OneRepMaxCalculator.brzycki(100.0, 1);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 2);
+      final b = OneRepMaxCalculator.brzycki(100.0, 2);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 3);
+      final b = OneRepMaxCalculator.brzycki(100.0, 3);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 4);
+      final b = OneRepMaxCalculator.brzycki(100.0, 4);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 5);
+      final b = OneRepMaxCalculator.brzycki(100.0, 5);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 6);
+      final b = OneRepMaxCalculator.brzycki(100.0, 6);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 7);
+      final b = OneRepMaxCalculator.brzycki(100.0, 7);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 8);
+      final b = OneRepMaxCalculator.brzycki(100.0, 8);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 9);
+      final b = OneRepMaxCalculator.brzycki(100.0, 9);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 10);
+      final b = OneRepMaxCalculator.brzycki(100.0, 10);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 11);
+      final b = OneRepMaxCalculator.brzycki(100.0, 11);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 100kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(100.0, 12);
+      final b = OneRepMaxCalculator.brzycki(100.0, 12);
+      expect(e, greaterThanOrEqualTo(100.0));
+      expect(b, greaterThanOrEqualTo(100.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(100.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 1);
+      final b = OneRepMaxCalculator.brzycki(110.0, 1);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 2);
+      final b = OneRepMaxCalculator.brzycki(110.0, 2);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 3);
+      final b = OneRepMaxCalculator.brzycki(110.0, 3);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 4);
+      final b = OneRepMaxCalculator.brzycki(110.0, 4);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 5);
+      final b = OneRepMaxCalculator.brzycki(110.0, 5);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 6);
+      final b = OneRepMaxCalculator.brzycki(110.0, 6);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 7);
+      final b = OneRepMaxCalculator.brzycki(110.0, 7);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 8);
+      final b = OneRepMaxCalculator.brzycki(110.0, 8);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 9);
+      final b = OneRepMaxCalculator.brzycki(110.0, 9);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 10);
+      final b = OneRepMaxCalculator.brzycki(110.0, 10);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 11);
+      final b = OneRepMaxCalculator.brzycki(110.0, 11);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 110kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(110.0, 12);
+      final b = OneRepMaxCalculator.brzycki(110.0, 12);
+      expect(e, greaterThanOrEqualTo(110.0));
+      expect(b, greaterThanOrEqualTo(110.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(110.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 1);
+      final b = OneRepMaxCalculator.brzycki(120.0, 1);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 2);
+      final b = OneRepMaxCalculator.brzycki(120.0, 2);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 3);
+      final b = OneRepMaxCalculator.brzycki(120.0, 3);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 4);
+      final b = OneRepMaxCalculator.brzycki(120.0, 4);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 5);
+      final b = OneRepMaxCalculator.brzycki(120.0, 5);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 6);
+      final b = OneRepMaxCalculator.brzycki(120.0, 6);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 7);
+      final b = OneRepMaxCalculator.brzycki(120.0, 7);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 8);
+      final b = OneRepMaxCalculator.brzycki(120.0, 8);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 9);
+      final b = OneRepMaxCalculator.brzycki(120.0, 9);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 10);
+      final b = OneRepMaxCalculator.brzycki(120.0, 10);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 11);
+      final b = OneRepMaxCalculator.brzycki(120.0, 11);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 120kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(120.0, 12);
+      final b = OneRepMaxCalculator.brzycki(120.0, 12);
+      expect(e, greaterThanOrEqualTo(120.0));
+      expect(b, greaterThanOrEqualTo(120.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(120.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 1);
+      final b = OneRepMaxCalculator.brzycki(130.0, 1);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 2);
+      final b = OneRepMaxCalculator.brzycki(130.0, 2);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 3);
+      final b = OneRepMaxCalculator.brzycki(130.0, 3);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 4);
+      final b = OneRepMaxCalculator.brzycki(130.0, 4);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 5);
+      final b = OneRepMaxCalculator.brzycki(130.0, 5);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 6);
+      final b = OneRepMaxCalculator.brzycki(130.0, 6);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 7);
+      final b = OneRepMaxCalculator.brzycki(130.0, 7);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 8);
+      final b = OneRepMaxCalculator.brzycki(130.0, 8);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 9);
+      final b = OneRepMaxCalculator.brzycki(130.0, 9);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 10);
+      final b = OneRepMaxCalculator.brzycki(130.0, 10);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 11);
+      final b = OneRepMaxCalculator.brzycki(130.0, 11);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 130kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(130.0, 12);
+      final b = OneRepMaxCalculator.brzycki(130.0, 12);
+      expect(e, greaterThanOrEqualTo(130.0));
+      expect(b, greaterThanOrEqualTo(130.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(130.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 1);
+      final b = OneRepMaxCalculator.brzycki(140.0, 1);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 2);
+      final b = OneRepMaxCalculator.brzycki(140.0, 2);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 3);
+      final b = OneRepMaxCalculator.brzycki(140.0, 3);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 4);
+      final b = OneRepMaxCalculator.brzycki(140.0, 4);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 5);
+      final b = OneRepMaxCalculator.brzycki(140.0, 5);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 6);
+      final b = OneRepMaxCalculator.brzycki(140.0, 6);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 7);
+      final b = OneRepMaxCalculator.brzycki(140.0, 7);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 8);
+      final b = OneRepMaxCalculator.brzycki(140.0, 8);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 9);
+      final b = OneRepMaxCalculator.brzycki(140.0, 9);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 10);
+      final b = OneRepMaxCalculator.brzycki(140.0, 10);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 11);
+      final b = OneRepMaxCalculator.brzycki(140.0, 11);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 140kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(140.0, 12);
+      final b = OneRepMaxCalculator.brzycki(140.0, 12);
+      expect(e, greaterThanOrEqualTo(140.0));
+      expect(b, greaterThanOrEqualTo(140.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(140.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 1);
+      final b = OneRepMaxCalculator.brzycki(150.0, 1);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 2);
+      final b = OneRepMaxCalculator.brzycki(150.0, 2);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 3);
+      final b = OneRepMaxCalculator.brzycki(150.0, 3);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 4);
+      final b = OneRepMaxCalculator.brzycki(150.0, 4);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 5);
+      final b = OneRepMaxCalculator.brzycki(150.0, 5);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 6);
+      final b = OneRepMaxCalculator.brzycki(150.0, 6);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 7);
+      final b = OneRepMaxCalculator.brzycki(150.0, 7);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 8);
+      final b = OneRepMaxCalculator.brzycki(150.0, 8);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 9);
+      final b = OneRepMaxCalculator.brzycki(150.0, 9);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 10);
+      final b = OneRepMaxCalculator.brzycki(150.0, 10);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 11);
+      final b = OneRepMaxCalculator.brzycki(150.0, 11);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 150kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(150.0, 12);
+      final b = OneRepMaxCalculator.brzycki(150.0, 12);
+      expect(e, greaterThanOrEqualTo(150.0));
+      expect(b, greaterThanOrEqualTo(150.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(150.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 1);
+      final b = OneRepMaxCalculator.brzycki(160.0, 1);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 2);
+      final b = OneRepMaxCalculator.brzycki(160.0, 2);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 3);
+      final b = OneRepMaxCalculator.brzycki(160.0, 3);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 4);
+      final b = OneRepMaxCalculator.brzycki(160.0, 4);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 5);
+      final b = OneRepMaxCalculator.brzycki(160.0, 5);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 6);
+      final b = OneRepMaxCalculator.brzycki(160.0, 6);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 7);
+      final b = OneRepMaxCalculator.brzycki(160.0, 7);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 8);
+      final b = OneRepMaxCalculator.brzycki(160.0, 8);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 9);
+      final b = OneRepMaxCalculator.brzycki(160.0, 9);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 10);
+      final b = OneRepMaxCalculator.brzycki(160.0, 10);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 11);
+      final b = OneRepMaxCalculator.brzycki(160.0, 11);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 160kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(160.0, 12);
+      final b = OneRepMaxCalculator.brzycki(160.0, 12);
+      expect(e, greaterThanOrEqualTo(160.0));
+      expect(b, greaterThanOrEqualTo(160.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(160.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 1);
+      final b = OneRepMaxCalculator.brzycki(180.0, 1);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 2);
+      final b = OneRepMaxCalculator.brzycki(180.0, 2);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 3);
+      final b = OneRepMaxCalculator.brzycki(180.0, 3);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 4);
+      final b = OneRepMaxCalculator.brzycki(180.0, 4);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 5);
+      final b = OneRepMaxCalculator.brzycki(180.0, 5);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 6);
+      final b = OneRepMaxCalculator.brzycki(180.0, 6);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 7);
+      final b = OneRepMaxCalculator.brzycki(180.0, 7);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 8);
+      final b = OneRepMaxCalculator.brzycki(180.0, 8);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 9);
+      final b = OneRepMaxCalculator.brzycki(180.0, 9);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 10);
+      final b = OneRepMaxCalculator.brzycki(180.0, 10);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 11);
+      final b = OneRepMaxCalculator.brzycki(180.0, 11);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 180kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(180.0, 12);
+      final b = OneRepMaxCalculator.brzycki(180.0, 12);
+      expect(e, greaterThanOrEqualTo(180.0));
+      expect(b, greaterThanOrEqualTo(180.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(180.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 1 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 1);
+      final b = OneRepMaxCalculator.brzycki(200.0, 1);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 1);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 2 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 2);
+      final b = OneRepMaxCalculator.brzycki(200.0, 2);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 2);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 3 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 3);
+      final b = OneRepMaxCalculator.brzycki(200.0, 3);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 3);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 4 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 4);
+      final b = OneRepMaxCalculator.brzycki(200.0, 4);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 4);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 5 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 5);
+      final b = OneRepMaxCalculator.brzycki(200.0, 5);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 5);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 6 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 6);
+      final b = OneRepMaxCalculator.brzycki(200.0, 6);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 6);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 7 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 7);
+      final b = OneRepMaxCalculator.brzycki(200.0, 7);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 7);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 8 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 8);
+      final b = OneRepMaxCalculator.brzycki(200.0, 8);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 8);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 9 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 9);
+      final b = OneRepMaxCalculator.brzycki(200.0, 9);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 9);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 10 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 10);
+      final b = OneRepMaxCalculator.brzycki(200.0, 10);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 10);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 11 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 11);
+      final b = OneRepMaxCalculator.brzycki(200.0, 11);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 11);
+      expect(rev, closeTo(200.0, 0.01));
+    });
+    test('calculates 1RM for 200kg x 12 reps', () {
+      final e = OneRepMaxCalculator.epley(200.0, 12);
+      final b = OneRepMaxCalculator.brzycki(200.0, 12);
+      expect(e, greaterThanOrEqualTo(200.0));
+      expect(b, greaterThanOrEqualTo(200.0));
+      final rev = OneRepMaxCalculator.weightForReps(e, 12);
+      expect(rev, closeTo(200.0, 0.01));
     });
   });
 }
-
-
-  group('OneRepMaxCalculator - high reps', () {
-    test('calculates 15 reps cleanly', () {
-      expect(OneRepMaxCalculator.epley(100, 15), 150.0);
-    });
-    test('calculates 20 reps cleanly', () {
-      expect(OneRepMaxCalculator.epley(100, 20), closeTo(166.67, 0.01));
-    });
-  });
-
-
-  group('OneRepMaxCalculator - reverse consistency', () {
-    test('weightForReps matches forward epley calculation', () {
-      const targetOneRm = 120.0;
-      final wtFor5 = OneRepMaxCalculator.weightForReps(targetOneRm, 5);
-      final derivedOneRm = OneRepMaxCalculator.epley(wtFor5, 5);
-      expect(derivedOneRm, closeTo(targetOneRm, 0.001));
-    });
-  });

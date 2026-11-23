@@ -32,7 +32,7 @@ class _AddCustomExerciseDialogState extends State<AddCustomExerciseDialog> {
 
     final now = DateTime.now();
     final newEx = Exercise(
-      id: 'custom_\${now.millisecondsSinceEpoch}',
+      id: 'custom_${now.millisecondsSinceEpoch}',
       name: _nameController.text.trim(),
       muscleGroup: _selectedMuscleGroup,
       notes: _notesController.text.trim(),

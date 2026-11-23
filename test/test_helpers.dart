@@ -11,6 +11,3 @@ Widget wrapWithMaterial(Widget child) {
     home: Scaffold(body: child),
   );
 }
-
-
-// Deterministic test environment configured

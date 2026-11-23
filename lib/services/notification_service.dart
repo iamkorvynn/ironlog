@@ -17,7 +17,7 @@ class NotificationService {
           AndroidInitializationSettings('@mipmap/ic_launcher');
       const initSettings = InitializationSettings(android: androidInit);
 
-      await _notificationsPlugin.initialize(initSettings);
+      await _notificationsPlugin.initialize(settings: initSettings);
       _isInitialized = true;
     } catch (_) {
       // In tests or headless environments, initialization can fail safely
@@ -40,7 +40,12 @@ class NotificationService {
       );
 
       const details = NotificationDetails(android: androidDetails);
-      await _notificationsPlugin.show(101, title, body, details);
+      await _notificationsPlugin.show(
+        id: 101,
+        title: title,
+        body: body,
+        notificationDetails: details,
+      );
     } catch (_) {
       // Safe fallback
     }
@@ -48,7 +53,7 @@ class NotificationService {
 
   Future<void> cancelNotifications() async {
     try {
-      await _notificationsPlugin.cancel(101);
+      await _notificationsPlugin.cancel(id: 101);
     } catch (_) {
       // Safe fallback
     }

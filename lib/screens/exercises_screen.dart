@@ -177,10 +177,10 @@ class _ExercisesScreenState extends State<ExercisesScreen>
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
-                              '\${pr.recordTypeLabel} • \${pr.reps} reps',
+                              '${pr.recordTypeLabel} • ${pr.reps} reps',
                             ),
                             trailing: Text(
-                              '\${pr.value.toStringAsFixed(1)} $unit',
+                              '${pr.value.toStringAsFixed(1)} $unit',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

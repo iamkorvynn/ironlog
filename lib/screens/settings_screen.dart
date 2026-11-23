@@ -143,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           items: AppConstants.defaultRestPresets.map((sec) {
                             return DropdownMenuItem(
                               value: sec,
-                              child: Text('\${sec}s'),
+                              child: Text('${sec}s'),
                             );
                           }).toList(),
                           onChanged: (val) {
@@ -208,7 +208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 children: [
                   Text(
-                    '\${AppConstants.appName} v\${AppConstants.appVersion}',
+                    '${AppConstants.appName} v${AppConstants.appVersion}',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

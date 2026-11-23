@@ -135,7 +135,7 @@ class RestTimerSheet extends StatelessWidget {
                   spacing: 10,
                   children: AppConstants.defaultRestPresets.map((sec) {
                     return ActionChip(
-                      label: Text('\${sec}s'),
+                      label: Text('${sec}s'),
                       onPressed: () => timerService.start(sec),
                     );
                   }).toList(),

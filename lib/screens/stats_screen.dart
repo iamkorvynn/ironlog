@@ -6,7 +6,6 @@ import 'package:ironlog/models/weekly_stats.dart';
 import 'package:ironlog/services/database_service.dart';
 import 'package:ironlog/services/settings_service.dart';
 import 'package:ironlog/services/stats_service.dart';
-import 'package:ironlog/utils/app_theme.dart';
 import 'package:ironlog/utils/unit_converter.dart';
 import 'package:ironlog/widgets/custom_bar_chart.dart';
 import 'package:ironlog/widgets/custom_line_chart.dart';
@@ -114,9 +113,9 @@ class _StatsScreenState extends State<StatsScreen> {
                         Expanded(
                           child: MetricCard(
                             title: 'Workouts',
-                            value: '\${_streakInfo.totalWorkouts}',
+                            value: '${_streakInfo.totalWorkouts}',
                             subtitle:
-                                '\${_streakInfo.currentWeeklyStreak} week streak',
+                                '${_streakInfo.currentWeeklyStreak} week streak',
                             icon: Icons.calendar_month,
                             iconColor: Colors.tealAccent,
                           ),

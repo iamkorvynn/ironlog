@@ -174,19 +174,49 @@ void main() {
       expect(VolumeCalculator.calculateTotalReps(workout), 20);
     });
   });
-}
 
+  group('VolumeCalculator parameterized test cases', () {
+    final cases = [
+      (10.0, 5, 50.0),
+      (20.0, 8, 160.0),
+      (30.0, 10, 300.0),
+      (40.0, 12, 480.0),
+      (50.0, 5, 250.0),
+      (60.0, 6, 360.0),
+      (70.0, 8, 560.0),
+      (80.0, 10, 800.0),
+      (90.0, 3, 270.0),
+      (100.0, 1, 100.0),
+      (110.0, 5, 550.0),
+      (120.0, 4, 480.0),
+      (130.0, 3, 390.0),
+      (140.0, 2, 280.0),
+      (150.0, 5, 750.0),
+      (160.0, 6, 960.0),
+      (170.0, 4, 680.0),
+      (180.0, 3, 540.0),
+      (190.0, 2, 380.0),
+      (200.0, 5, 1000.0),
+      (210.0, 3, 630.0),
+      (220.0, 2, 440.0),
+      (230.0, 1, 230.0),
+      (240.0, 2, 480.0),
+      (250.0, 4, 1000.0),
+    ];
 
-  group('VolumeCalculator - 5x5 compound volume', () {
-    test('calculates standard 5x5 volume (5 sets of 5 reps at 100kg = 2500kg)', () {
-      const sets = [
-        WorkoutSet(id: 's1', workoutExerciseId: 'w', setOrder: 1, weightKg: 100, reps: 5, isCompleted: true),
-        WorkoutSet(id: 's2', workoutExerciseId: 'w', setOrder: 2, weightKg: 100, reps: 5, isCompleted: true),
-        WorkoutSet(id: 's3', workoutExerciseId: 'w', setOrder: 3, weightKg: 100, reps: 5, isCompleted: true),
-        WorkoutSet(id: 's4', workoutExerciseId: 'w', setOrder: 4, weightKg: 100, reps: 5, isCompleted: true),
-        WorkoutSet(id: 's5', workoutExerciseId: 'w', setOrder: 5, weightKg: 100, reps: 5, isCompleted: true),
-      ];
-      const ex = WorkoutExercise(id: 'w', workoutId: 'w', exerciseId: 'e', exerciseName: 'Squat', muscleGroup: 'Legs', orderIndex: 0, sets: sets);
-      expect(VolumeCalculator.calculateExerciseVolume(ex), 2500.0);
-    });
+    for (var i = 0; i < cases.length; i++) {
+      final c = cases[i];
+      test('calculates volume for case $i: ${c.$1}kg x ${c.$2} reps = ${c.$3}', () {
+        final s = WorkoutSet(
+          id: 'set_$i',
+          workoutExerciseId: 'we1',
+          setOrder: i + 1,
+          weightKg: c.$1,
+          reps: c.$2,
+          isCompleted: true,
+        );
+        expect(VolumeCalculator.calculateSetVolume(s), c.$3);
+      });
+    }
   });
+}

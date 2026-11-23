@@ -54,7 +54,7 @@ class CustomBarChart extends StatelessWidget {
                   if (val > 0)
                     Text(
                       val >= 1000
-                          ? '\${(val / 1000).toStringAsFixed(1)}k'
+                          ? '${(val / 1000).toStringAsFixed(1)}k'
                           : val.toStringAsFixed(0),
                       style: const TextStyle(
                         fontSize: 9,
@@ -74,7 +74,7 @@ class CustomBarChart extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'W\${d.weekStart.day}',
+                    'W${d.weekStart.day}',
                     style: TextStyle(
                       fontSize: 10,
                       color: isCurrent ? Colors.white : AppTheme.textSecondary,

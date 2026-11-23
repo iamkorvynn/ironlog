@@ -61,7 +61,7 @@ class WorkoutCard extends StatelessWidget {
                 Text(
                   exercisesSummary +
                       (workout.exercises.length > 3
-                          ? ' + \${workout.exercises.length - 3} more'
+                          ? ' + ${workout.exercises.length - 3} more'
                           : ''),
                   style: const TextStyle(
                     fontSize: 13,
@@ -110,7 +110,7 @@ class WorkoutCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '\${workout.totalSets} sets',
+                      '${workout.totalSets} sets',
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppTheme.textSecondary,

@@ -31,6 +31,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+**/build/
+.gradle/
+.dart_tool/
 /coverage/
 
 # Symbolication related
@@ -49,3 +52,4 @@ app.*.map.json
 
 # Build temp files
 .tmp/
+ANTIGRAVITY_PROMPT.md

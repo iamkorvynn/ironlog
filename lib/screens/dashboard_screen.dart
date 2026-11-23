@@ -132,7 +132,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    'Elapsed: \${UnitConverter.formatDuration(_activeWorkoutService.elapsedSeconds)}',
+                                    'Elapsed: ${UnitConverter.formatDuration(_activeWorkoutService.elapsedSeconds)}',
                                     style: const TextStyle(
                                       color: AppTheme.primaryOrangeLight,
                                       fontSize: 13,
@@ -188,7 +188,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 unit,
                               ),
                               subtitle:
-                                  '\${_summary?.thisWeekWorkouts ?? 0} workouts',
+                                  '${_summary?.thisWeekWorkouts ?? 0} workouts',
                               icon: Icons.fitness_center_rounded,
                             ),
                           ),
@@ -196,8 +196,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Expanded(
                             child: MetricCard(
                               title: 'Consistency',
-                              value: '\${_summary?.activeStreakWeeks ?? 0} Wks',
-                              subtitle: '\${_summary?.totalPrsCount ?? 0} PRs broken',
+                              value: '${_summary?.activeStreakWeeks ?? 0} Wks',
+                              subtitle: '${_summary?.totalPrsCount ?? 0} PRs broken',
                               icon: Icons.local_fire_department_rounded,
                               iconColor: Colors.deepOrangeAccent,
                             ),

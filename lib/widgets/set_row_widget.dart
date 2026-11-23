@@ -122,7 +122,7 @@ class _SetRowWidgetState extends State<SetRowWidget> {
               shape: BoxShape.circle,
             ),
             child: Text(
-              '\${widget.set.setOrder}',
+              '${widget.set.setOrder}',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,

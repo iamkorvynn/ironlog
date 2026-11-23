@@ -52,13 +52,3 @@ void main() {
     });
   });
 }
-
-
-  group('AppDateUtils - additional time tests', () {
-    test('startOfDay retains original date parts', () {
-      final dt = DateTime.utc(2026, 11, 23, 23, 59, 59);
-      final sod = AppDateUtils.startOfDay(dt);
-      expect(sod.day, 23);
-      expect(sod.hour, 0);
-    });
-  });

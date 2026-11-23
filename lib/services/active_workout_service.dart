@@ -36,7 +36,7 @@ class ActiveWorkoutService extends ChangeNotifier {
         name ?? 'Workout ${now.day}/${now.month}';
 
     _activeWorkout = Workout(
-      id: 'workout_\${now.millisecondsSinceEpoch}',
+      id: 'workout_${now.millisecondsSinceEpoch}',
       name: defaultName,
       startTime: now,
       durationSeconds: 0,
@@ -74,11 +74,11 @@ class ActiveWorkoutService extends ChangeNotifier {
     if (_activeWorkout == null) return;
 
     final weId =
-        'we_\${exercise.id}_\${DateTime.now().millisecondsSinceEpoch}';
+        'we_${exercise.id}_${DateTime.now().millisecondsSinceEpoch}';
 
     // Auto-add first empty set
     final firstSet = WorkoutSet(
-      id: 'set_\${weId}_1',
+      id: 'set_${weId}_1',
       workoutExerciseId: weId,
       setOrder: 1,
       weightKg: 0.0,
@@ -120,7 +120,7 @@ class ActiveWorkoutService extends ChangeNotifier {
       final prevSet = we.sets.isNotEmpty ? we.sets.last : null;
 
       final newSet = WorkoutSet(
-        id: 'set_\${weId}_\$nextOrder',
+        id: 'set_${weId}_$nextOrder',
         workoutExerciseId: weId,
         setOrder: nextOrder,
         weightKg: weightKg ?? prevSet?.weightKg ?? 0.0,

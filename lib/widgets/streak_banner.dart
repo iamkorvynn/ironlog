@@ -47,7 +47,7 @@ class StreakBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '\${streakInfo.currentWeeklyStreak} Week Streak!',
+                  '${streakInfo.currentWeeklyStreak} Week Streak!',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class StreakBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '\${streakInfo.totalWorkouts} lifetime workouts logged',
+                  '${streakInfo.totalWorkouts} lifetime workouts logged',
                   style: const TextStyle(
                     fontSize: 13,
                     color: AppTheme.textSecondary,

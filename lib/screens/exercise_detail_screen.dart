@@ -163,7 +163,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
-                            'Achieved on \${UnitConverter.formatDate(pr.achievedAt)}',
+                            'Achieved on ${UnitConverter.formatDate(pr.achievedAt)}',
                           ),
                           trailing: Text(
                             UnitConverter.formatWeight(pr.value, unit),

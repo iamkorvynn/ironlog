@@ -1,5 +1,7 @@
 import 'package:ironlog/models/exercise.dart';
 import 'package:ironlog/models/workout.dart';
+import 'package:ironlog/models/workout_exercise.dart';
+import 'package:ironlog/models/workout_set.dart';
 import 'package:ironlog/models/personal_record.dart';
 import 'package:ironlog/models/user_settings.dart';
 

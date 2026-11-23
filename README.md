@@ -7,3 +7,7 @@ A local-only gym and workout tracker built with Flutter.
 - Fully offline and local-only
 - 0 analysis issues
 - 500+ green tests
+
+
+## License
+MIT

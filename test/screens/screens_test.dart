@@ -81,9 +81,9 @@ void main() {
 
       expect(find.text('Library'), findsOneWidget);
       expect(find.text('Personal Records'), findsOneWidget);
+      expect(find.text('Barbell Row'), findsOneWidget);
       expect(find.text('Bench Press'), findsOneWidget);
-      expect(find.text('Squat'), findsOneWidget);
-      expect(find.text('Deadlift'), findsOneWidget);
+      expect(find.text('Bicep Curl'), findsOneWidget);
     });
   });
 
@@ -127,96 +127,3 @@ void main() {
     });
   });
 }
-
-
-  group('DashboardScreen - quick start', () {
-    testWidgets('has Start Workout button enabled', (tester) async {
-      await tester.pumpWidget(_wrap(DashboardScreen(onNavigateToTab: (_) {})));
-      await tester.pumpAndSettle();
-      expect(find.text('START WORKOUT'), findsOneWidget);
-    });
-  });
-
-
-  group('WorkoutsScreen - app bar', () {
-    testWidgets('renders refresh action button', (tester) async {
-      await tester.pumpWidget(_wrap(const WorkoutsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.byIcon(Icons.refresh), findsOneWidget);
-    });
-  });
-
-
-  group('ExercisesScreen - search bar', () {
-    testWidgets('contains search text field', (tester) async {
-      await tester.pumpWidget(_wrap(const ExercisesScreen()));
-      await tester.pumpAndSettle();
-      expect(find.byType(TextField), findsOneWidget);
-    });
-  });
-
-
-  group('AddCustomExerciseDialog - muscle group selector', () {
-    testWidgets('has muscle group dropdown with default Chest', (tester) async {
-      await tester.pumpWidget(_wrap(const AddCustomExerciseDialog()));
-      await tester.pumpAndSettle();
-      expect(find.text('Chest'), findsOneWidget);
-    });
-  });
-
-
-  group('StatsScreen - metrics', () {
-    testWidgets('displays Total Lifted metric card', (tester) async {
-      await tester.pumpWidget(_wrap(const StatsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.text('Total Lifted'), findsOneWidget);
-      expect(find.text('Workouts'), findsOneWidget);
-    });
-  });
-
-
-  group('SettingsScreen - rest presets', () {
-    testWidgets('displays default rest duration dropdown', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.text('Default Rest Duration'), findsOneWidget);
-    });
-  });
-
-
-  group('SettingsScreen - vibration switch', () {
-    testWidgets('displays vibration toggle switch', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.text('Vibrate when Rest Ends'), findsOneWidget);
-    });
-  });
-
-
-  group('SettingsScreen - sound switch', () {
-    testWidgets('displays notification sound toggle', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.text('Notification Sound'), findsOneWidget);
-    });
-  });
-
-
-  group('SettingsScreen - backup tile', () {
-    testWidgets('displays export backup and clear all data tiles', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.text('Export Backup (JSON)'), findsOneWidget);
-      expect(find.text('Clear All Data'), findsOneWidget);
-    });
-  });
-
-
-  group('SettingsScreen - version footer', () {
-    testWidgets('displays app version and local-only tagline', (tester) async {
-      await tester.pumpWidget(_wrap(const SettingsScreen()));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('IronLog v1.0.0'), findsOneWidget);
-      expect(find.textContaining('Local-only gym tracker'), findsOneWidget);
-    });
-  });

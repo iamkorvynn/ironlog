@@ -1,4 +1,3 @@
-import 'package:ironlog/models/workout.dart';
 import 'package:ironlog/models/workout_summary.dart';
 import 'package:ironlog/models/streak_info.dart';
 import 'package:ironlog/services/database_service.dart';

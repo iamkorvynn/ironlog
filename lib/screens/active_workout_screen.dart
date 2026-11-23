@@ -129,7 +129,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  '🏆 \${pr.exerciseName}: \${UnitConverter.formatWeight(pr.value, unit)} (\${pr.recordTypeLabel})',
+                  '🏆 ${pr.exerciseName}: ${UnitConverter.formatWeight(pr.value, unit)} (${pr.recordTypeLabel})',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               );
@@ -212,7 +212,7 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
                     ],
                   ),
                   Text(
-                    'Volume: \${UnitConverter.formatVolume(workout.calculateTotalVolume(), unit)}',
+                    'Volume: ${UnitConverter.formatVolume(workout.calculateTotalVolume(), unit)}',
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
