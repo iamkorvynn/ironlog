@@ -121,3 +121,6 @@ class WorkoutSet {
 
 
 // Epley formula: 1RM = Weight * (1 + Reps / 30)
+
+
+// Brzycki formula: 1RM = Weight * (36 / (37 - Reps))
