@@ -69,3 +69,6 @@ class StreakBanner extends StatelessWidget {
     );
   }
 }
+
+
+// Warm gradient highlight
