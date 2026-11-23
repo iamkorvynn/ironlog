@@ -281,3 +281,6 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
     );
   }
 }
+
+
+// Session stats overview card
