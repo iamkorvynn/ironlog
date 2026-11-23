@@ -314,3 +314,6 @@ class _ActiveWorkoutScreenState extends State<ActiveWorkoutScreen> {
     );
   }
 }
+
+
+// Prominent finish workout CTA
