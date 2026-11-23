@@ -77,3 +77,6 @@ class PRService {
     return newPrs;
   }
 }
+
+
+// Precedence: 1RM estimated takes priority over pure weight for PR badges
