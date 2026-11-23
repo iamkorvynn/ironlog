@@ -16,6 +16,19 @@ class AppConstants {
   static const String appName = 'IronLog';
   static const String appVersion = '1.0.0';
 
+  static const List<String> muscleGroups = [
+    'All',
+    'Chest',
+    'Back',
+    'Legs',
+    'Shoulders',
+    'Arms',
+    'Core',
+    'Other',
+  ];
+
+  static const List<int> defaultRestPresets = [30, 60, 90, 120];
+
   static const List<BuiltInExerciseDef> builtInExercises = [
     BuiltInExerciseDef(
       id: 'builtin_bench_press',
