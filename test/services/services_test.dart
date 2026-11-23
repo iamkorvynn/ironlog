@@ -358,3 +358,14 @@ void main() {
       expect(settings.themeMode, 'dark');
     });
   });
+
+
+  group('StatsService - zero state', () {
+    test('returns 0 streak when no workouts', () async {
+      final db = DatabaseService();
+      await db.clearAllData();
+      final stats = StatsService(dbService: db);
+      final streak = await stats.getStreakInfo();
+      expect(streak.currentWeeklyStreak, 0);
+    });
+  });
