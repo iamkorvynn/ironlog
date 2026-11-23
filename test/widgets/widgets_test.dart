@@ -286,3 +286,11 @@ void main() {
     });
   });
 }
+
+
+  group('PrBadge - variants', () {
+    testWidgets('renders custom font size', (tester) async {
+      await tester.pumpWidget(_wrap(const PrBadge(label: 'NEW', fontSize: 14)));
+      expect(find.text('NEW'), findsOneWidget);
+    });
+  });
