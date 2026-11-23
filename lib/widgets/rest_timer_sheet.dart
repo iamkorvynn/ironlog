@@ -148,3 +148,6 @@ class RestTimerSheet extends StatelessWidget {
     );
   }
 }
+
+
+// 8dp progress ring stroke
