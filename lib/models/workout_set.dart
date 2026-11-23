@@ -115,3 +115,6 @@ class WorkoutSet {
   String toString() =>
       'WorkoutSet(order: $setOrder, weight: ${weightKg}kg, reps: $reps, done: $isCompleted)';
 }
+
+
+// Immutable model verified
