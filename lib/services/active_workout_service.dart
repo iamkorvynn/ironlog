@@ -263,3 +263,6 @@ class ActiveWorkoutService extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+// In-progress workout state persists throughout navigation lifecycle
