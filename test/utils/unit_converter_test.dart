@@ -213,3 +213,19 @@ void main() {
       expect(UnitConverter.displayWeight(500, 'kg'), 500.0);
     });
   });
+
+
+  group('UnitConverter - round weights lbs', () {
+    test('converts 135 lbs (1 plate) to ~61.23 kg', () {
+      expect(UnitConverter.lbsToKg(135), closeTo(61.235, 0.01));
+    });
+    test('converts 225 lbs (2 plates) to ~102.05 kg', () {
+      expect(UnitConverter.lbsToKg(225), closeTo(102.058, 0.01));
+    });
+    test('converts 315 lbs (3 plates) to ~142.88 kg', () {
+      expect(UnitConverter.lbsToKg(315), closeTo(142.882, 0.01));
+    });
+    test('converts 405 lbs (4 plates) to ~183.70 kg', () {
+      expect(UnitConverter.lbsToKg(405), closeTo(183.705, 0.01));
+    });
+  });
