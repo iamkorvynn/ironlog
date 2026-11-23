@@ -415,3 +415,11 @@ void main() {
       expect(find.byIcon(Icons.bedtime_outlined), findsOneWidget);
     });
   });
+
+
+  group('CustomBarChart - empty placeholder', () {
+    testWidgets('displays placeholder text when empty', (tester) async {
+      await tester.pumpWidget(_wrap(const CustomBarChart(data: [], unit: 'kg')));
+      expect(find.text('No volume data yet'), findsOneWidget);
+    });
+  });
