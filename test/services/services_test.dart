@@ -275,3 +275,15 @@ void main() {
       }
     });
   });
+
+
+  group('DatabaseService - pagination', () {
+    test('respects limit parameter', () async {
+      final db = DatabaseService();
+      for (int i = 0; i < 5; i++) {
+        await db.insertWorkout(Workout(id: 'w_limit_$i', name: 'W', startTime: DateTime.now()));
+      }
+      final limited = await db.getWorkouts(limit: 3);
+      expect(limited.length, lessThanOrEqualTo(3));
+    });
+  });
