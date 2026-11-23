@@ -47,3 +47,6 @@ class RestTimerState {
     );
   }
 }
+
+
+// Immutable model verified
