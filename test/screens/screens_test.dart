@@ -210,3 +210,13 @@ void main() {
       expect(find.text('Clear All Data'), findsOneWidget);
     });
   });
+
+
+  group('SettingsScreen - version footer', () {
+    testWidgets('displays app version and local-only tagline', (tester) async {
+      await tester.pumpWidget(_wrap(const SettingsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('IronLog v1.0.0'), findsOneWidget);
+      expect(find.textContaining('Local-only gym tracker'), findsOneWidget);
+    });
+  });
