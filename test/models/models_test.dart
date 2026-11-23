@@ -256,3 +256,22 @@ void main() {
       expect(we.completedSetsCount, 1);
     });
   });
+
+
+  group('Workout - total reps aggregation', () {
+    test('sums completed reps across all exercises', () {
+      const w = Workout(
+        id: 'w', name: 'Push', startTime: null ?? DateTime(2026, 11, 23),
+        exercises: [
+          WorkoutExercise(
+            id: '1', workoutId: 'w', exerciseId: '1', exerciseName: 'Dips', muscleGroup: 'Chest', orderIndex: 0,
+            sets: [
+              WorkoutSet(id: '1', workoutExerciseId: '1', setOrder: 1, weightKg: 0, reps: 12, isCompleted: true),
+              WorkoutSet(id: '2', workoutExerciseId: '1', setOrder: 2, weightKg: 0, reps: 10, isCompleted: true),
+            ],
+          ),
+        ],
+      );
+      expect(w.calculateTotalReps(), 22);
+    });
+  });
