@@ -223,3 +223,14 @@ void main() {
     });
   });
 }
+
+
+  group('Exercise model - equality details', () {
+    test('identical exercises compare equal', () {
+      final now = DateTime(2026, 11, 23);
+      final e1 = Exercise(id: '1', name: 'Squat', muscleGroup: 'Legs', createdAt: now);
+      final e2 = Exercise(id: '1', name: 'Squat', muscleGroup: 'Legs', createdAt: now);
+      expect(e1, equals(e2));
+      expect(e1.hashCode, equals(e2.hashCode));
+    });
+  });
