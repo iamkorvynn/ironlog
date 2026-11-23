@@ -332,3 +332,30 @@ void main() {
       expect(find.byType(ElevatedButton), findsNothing);
     });
   });
+
+
+  group('ConfirmDialog - destructive style', () {
+    testWidgets('renders delete button in red style', (tester) async {
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: Builder(builder: (context) {
+            return ElevatedButton(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (_) => const ConfirmDialog(
+                  title: 'Delete',
+                  content: 'Proceed?',
+                  confirmLabel: 'Delete Forever',
+                  isDestructive: true,
+                ),
+              ),
+              child: const Text('Tap'),
+            );
+          }),
+        ),
+      ));
+      await tester.tap(find.text('Tap'));
+      await tester.pumpAndSettle();
+      expect(find.text('Delete Forever'), findsOneWidget);
+    });
+  });
