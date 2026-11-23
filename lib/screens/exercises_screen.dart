@@ -201,3 +201,6 @@ class _ExercisesScreenState extends State<ExercisesScreen>
     );
   }
 }
+
+
+// Material 3 tab styling
