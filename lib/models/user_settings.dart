@@ -81,3 +81,6 @@ class UserSettings {
       soundOnRestEnd.hashCode ^
       autoStartRestTimer.hashCode;
 }
+
+
+// Immutable model verified
