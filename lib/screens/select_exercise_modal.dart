@@ -126,3 +126,6 @@ class _SelectExerciseModalState extends State<SelectExerciseModal> {
     );
   }
 }
+
+
+// Dense search input
