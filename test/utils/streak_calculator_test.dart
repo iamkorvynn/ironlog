@@ -76,3 +76,13 @@ void main() {
     });
   });
 }
+
+
+  group('StreakCalculator - boundary calendar checks', () {
+    test('calculates correctly across month boundary', () {
+      final w1 = Workout(id: 'w1', name: 'W1', startTime: DateTime(2026, 11, 1));
+      final w2 = Workout(id: 'w2', name: 'W2', startTime: DateTime(2026, 10, 25));
+      final streak = StreakCalculator.calculate([w1, w2]);
+      expect(streak.totalWorkouts, 2);
+    });
+  });
