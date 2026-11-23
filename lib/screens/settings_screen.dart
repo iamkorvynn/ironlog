@@ -229,3 +229,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
+
+
+// Segmented switch alignment
