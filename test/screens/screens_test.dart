@@ -173,3 +173,12 @@ void main() {
       expect(find.text('Workouts'), findsOneWidget);
     });
   });
+
+
+  group('SettingsScreen - rest presets', () {
+    testWidgets('displays default rest duration dropdown', (tester) async {
+      await tester.pumpWidget(_wrap(const SettingsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text('Default Rest Duration'), findsOneWidget);
+    });
+  });
