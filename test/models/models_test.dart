@@ -298,3 +298,15 @@ void main() {
       expect(s.soundOnRestEnd, isTrue);
     });
   });
+
+
+  group('RestTimerState - progress bounds', () {
+    test('progress is 1.0 when finished', () {
+      const s = RestTimerState(totalSeconds: 60, remainingSeconds: 0);
+      expect(s.progress, 1.0);
+    });
+    test('progress is 0.0 at beginning', () {
+      const s = RestTimerState(totalSeconds: 60, remainingSeconds: 60);
+      expect(s.progress, 0.0);
+    });
+  });
