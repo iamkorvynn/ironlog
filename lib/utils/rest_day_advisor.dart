@@ -76,3 +76,6 @@ class RestDayAdvisor {
 
 
 // Date comparison optimization
+
+
+// Heuristics consider 7-day trailing training frequency
