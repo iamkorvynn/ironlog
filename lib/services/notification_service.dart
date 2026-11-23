@@ -54,3 +54,6 @@ class NotificationService {
     }
   }
 }
+
+
+// Channel rest_timer_channel configured with High importance for timer alerts
