@@ -78,3 +78,6 @@ class MetricCard extends StatelessWidget {
     );
   }
 }
+
+
+// Typography scale refinement
