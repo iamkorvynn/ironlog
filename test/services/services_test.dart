@@ -324,3 +324,26 @@ void main() {
       timer.stop();
     });
   });
+
+
+  group('ActiveWorkoutService - reindexing sets', () {
+    test('deleting middle set updates subsequent set orders', () {
+      final active = ActiveWorkoutService();
+      active.startWorkout();
+      final ex = Exercise.getBuiltInExercises().first;
+      active.addExercise(ex);
+      final weId = active.activeWorkout!.exercises.first.id;
+      active.addSet(weId); // set 2
+      active.addSet(weId); // set 3
+
+      // Delete set 2
+      final set2Id = active.activeWorkout!.exercises.first.sets[1].id;
+      active.removeSet(weId, set2Id);
+
+      final sets = active.activeWorkout!.exercises.first.sets;
+      expect(sets.length, 2);
+      expect(sets[0].setOrder, 1);
+      expect(sets[1].setOrder, 2);
+      active.cancelWorkout();
+    });
+  });
