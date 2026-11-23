@@ -163,3 +163,13 @@ void main() {
       expect(find.text('Chest'), findsOneWidget);
     });
   });
+
+
+  group('StatsScreen - metrics', () {
+    testWidgets('displays Total Lifted metric card', (tester) async {
+      await tester.pumpWidget(_wrap(const StatsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text('Total Lifted'), findsOneWidget);
+      expect(find.text('Workouts'), findsOneWidget);
+    });
+  });
