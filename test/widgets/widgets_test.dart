@@ -383,3 +383,18 @@ void main() {
       expect(find.text('Custom'), findsOneWidget);
     });
   });
+
+
+  group('WorkoutCard - exercises summary', () {
+    testWidgets('displays first three exercise names', (tester) async {
+      const we1 = WorkoutExercise(id: '1', workoutId: 'w', exerciseId: 'e1', exerciseName: 'Bench', muscleGroup: 'Chest', orderIndex: 0);
+      const we2 = WorkoutExercise(id: '2', workoutId: 'w', exerciseId: 'e2', exerciseName: 'Squat', muscleGroup: 'Legs', orderIndex: 1);
+      final w = Workout(
+        id: 'w', name: 'Push', startTime: DateTime.now(), exercises: const [we1, we2],
+      );
+      await tester.pumpWidget(_wrap(
+        WorkoutCard(workout: w, unit: 'kg', onTap: () {}),
+      ));
+      expect(find.textContaining('Bench, Squat'), findsOneWidget);
+    });
+  });
