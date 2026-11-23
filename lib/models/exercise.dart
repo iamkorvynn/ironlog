@@ -93,3 +93,6 @@ class Exercise {
   @override
   String toString() => 'Exercise($id, $name, $muscleGroup)';
 }
+
+
+// Immutable model verified
