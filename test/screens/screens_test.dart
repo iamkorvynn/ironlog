@@ -136,3 +136,12 @@ void main() {
       expect(find.text('START WORKOUT'), findsOneWidget);
     });
   });
+
+
+  group('WorkoutsScreen - app bar', () {
+    testWidgets('renders refresh action button', (tester) async {
+      await tester.pumpWidget(_wrap(const WorkoutsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.refresh), findsOneWidget);
+    });
+  });
