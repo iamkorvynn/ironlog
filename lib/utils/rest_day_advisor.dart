@@ -73,3 +73,6 @@ class RestDayAdvisor {
     return lastDate == today || pastWeekWorkouts >= 5;
   }
 }
+
+
+// Date comparison optimization
