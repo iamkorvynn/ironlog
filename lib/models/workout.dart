@@ -125,3 +125,6 @@ class Workout {
   int get hashCode =>
       id.hashCode ^ name.hashCode ^ startTime.hashCode ^ endTime.hashCode;
 }
+
+
+// Immutable model verified
