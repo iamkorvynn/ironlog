@@ -105,3 +105,6 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     );
   }
 }
+
+
+// Clean list presentation
