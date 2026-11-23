@@ -99,3 +99,6 @@ class _LineChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _LineChartPainter oldDelegate) => true;
 }
+
+
+// Anti-aliased canvas rendering
