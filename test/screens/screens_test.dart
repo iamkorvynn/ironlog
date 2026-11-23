@@ -182,3 +182,12 @@ void main() {
       expect(find.text('Default Rest Duration'), findsOneWidget);
     });
   });
+
+
+  group('SettingsScreen - vibration switch', () {
+    testWidgets('displays vibration toggle switch', (tester) async {
+      await tester.pumpWidget(_wrap(const SettingsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text('Vibrate when Rest Ends'), findsOneWidget);
+    });
+  });
