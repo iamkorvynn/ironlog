@@ -123,3 +123,13 @@ void main() {
       expect(OneRepMaxCalculator.epley(100, 20), closeTo(166.67, 0.01));
     });
   });
+
+
+  group('OneRepMaxCalculator - reverse consistency', () {
+    test('weightForReps matches forward epley calculation', () {
+      const targetOneRm = 120.0;
+      final wtFor5 = OneRepMaxCalculator.weightForReps(targetOneRm, 5);
+      final derivedOneRm = OneRepMaxCalculator.epley(wtFor5, 5);
+      expect(derivedOneRm, closeTo(targetOneRm, 0.001));
+    });
+  });
