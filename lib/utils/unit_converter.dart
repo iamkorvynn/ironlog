@@ -90,3 +90,6 @@ class UnitConverter {
     return DateFormat('d MMM yyyy').format(dt);
   }
 }
+
+
+// Performance optimized conversions
