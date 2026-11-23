@@ -31,3 +31,6 @@ class OneRepMaxCalculator {
     return table;
   }
 }
+
+
+// Formula optimizations
