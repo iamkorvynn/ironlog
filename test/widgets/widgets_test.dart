@@ -434,3 +434,11 @@ void main() {
       expect(find.text('Log at least 2 sessions to see progress curve'), findsOneWidget);
     });
   });
+
+
+  group('MuscleGroupSelector - scroll', () {
+    testWidgets('renders horizontal scroll view', (tester) async {
+      await tester.pumpWidget(_wrap(MuscleGroupSelector(selected: 'All', onSelected: (_) {})));
+      expect(find.byType(SingleChildScrollView), findsOneWidget);
+    });
+  });
