@@ -91,3 +91,6 @@ class CustomBarChart extends StatelessWidget {
     );
   }
 }
+
+
+// Chart typography clarity
