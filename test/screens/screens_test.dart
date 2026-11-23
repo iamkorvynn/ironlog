@@ -127,3 +127,12 @@ void main() {
     });
   });
 }
+
+
+  group('DashboardScreen - quick start', () {
+    testWidgets('has Start Workout button enabled', (tester) async {
+      await tester.pumpWidget(_wrap(DashboardScreen(onNavigateToTab: (_) {})));
+      await tester.pumpAndSettle();
+      expect(find.text('START WORKOUT'), findsOneWidget);
+    });
+  });
