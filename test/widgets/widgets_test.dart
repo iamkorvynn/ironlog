@@ -294,3 +294,11 @@ void main() {
       expect(find.text('NEW'), findsOneWidget);
     });
   });
+
+
+  group('VolumeChip - lbs formatting', () {
+    testWidgets('displays volume in lbs', (tester) async {
+      await tester.pumpWidget(_wrap(const VolumeChip(volumeKg: 1000, unit: 'lbs')));
+      expect(find.textContaining('lbs'), findsOneWidget);
+    });
+  });
