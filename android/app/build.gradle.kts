@@ -42,3 +42,6 @@ dependencies {
 flutter {
     source = "../.."
 }
+
+
+// Debug keystore fallback configured for seamless release verification
