@@ -313,3 +313,14 @@ void main() {
       expect(prs.isNotEmpty, isTrue);
     });
   });
+
+
+  group('RestTimerService - subtract time', () {
+    test('subtracting time decreases remaining', () {
+      final timer = RestTimerService();
+      timer.start(60);
+      timer.addSeconds(-15);
+      expect(timer.remainingSeconds, 45);
+      timer.stop();
+    });
+  });
