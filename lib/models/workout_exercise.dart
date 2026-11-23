@@ -133,3 +133,6 @@ class WorkoutExercise {
       exerciseId.hashCode ^
       orderIndex.hashCode;
 }
+
+
+// Immutable model verified
