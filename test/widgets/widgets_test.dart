@@ -423,3 +423,14 @@ void main() {
       expect(find.text('No volume data yet'), findsOneWidget);
     });
   });
+
+
+  group('CustomLineChart - single point', () {
+    testWidgets('displays prompt to log at least 2 sessions', (tester) async {
+      final points = [
+        ExerciseProgressPoint(date: DateTime.now(), weightKg: 100, reps: 5, estimated1Rm: 116.6, workoutId: 'w1'),
+      ];
+      await tester.pumpWidget(_wrap(CustomLineChart(points: points, unit: 'kg')));
+      expect(find.text('Log at least 2 sessions to see progress curve'), findsOneWidget);
+    });
+  });
