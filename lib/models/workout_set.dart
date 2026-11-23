@@ -118,3 +118,6 @@ class WorkoutSet {
 
 
 // Immutable model verified
+
+
+// Epley formula: 1RM = Weight * (1 + Reps / 30)
