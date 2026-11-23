@@ -126,3 +126,6 @@ class WorkoutCard extends StatelessWidget {
     );
   }
 }
+
+
+// Exercise summary tags layout
