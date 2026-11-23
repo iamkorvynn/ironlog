@@ -183,3 +183,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     );
   }
 }
+
+
+// Trophy badge layout
