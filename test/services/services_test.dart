@@ -297,3 +297,19 @@ void main() {
       expect(exercises.length, 12);
     });
   });
+
+
+  group('PRService - volume records', () {
+    test('detects high volume PR', () async {
+      final db = DatabaseService();
+      final prService = PRService(dbService: db);
+      const we = WorkoutExercise(
+        id: 'we_vol', workoutId: 'w', exerciseId: 'builtin_bicep_curl', exerciseName: 'Bicep Curl', muscleGroup: 'Arms', orderIndex: 0,
+        sets: [
+          WorkoutSet(id: 's', workoutExerciseId: 'we_vol', setOrder: 1, weightKg: 20, reps: 20, isCompleted: true),
+        ],
+      );
+      final prs = await prService.checkAndRecordPrs(exercise: we, workoutId: 'w', timestamp: DateTime.now());
+      expect(prs.isNotEmpty, isTrue);
+    });
+  });
