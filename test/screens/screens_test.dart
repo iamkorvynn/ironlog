@@ -154,3 +154,12 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
   });
+
+
+  group('AddCustomExerciseDialog - muscle group selector', () {
+    testWidgets('has muscle group dropdown with default Chest', (tester) async {
+      await tester.pumpWidget(_wrap(const AddCustomExerciseDialog()));
+      await tester.pumpAndSettle();
+      expect(find.text('Chest'), findsOneWidget);
+    });
+  });
