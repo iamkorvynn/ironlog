@@ -264,3 +264,14 @@ void main() {
     });
   });
 }
+
+
+  group('DatabaseService - alphabetical sorting', () {
+    test('returns exercises sorted alphabetically', () async {
+      final db = DatabaseService();
+      final list = await db.getExercises();
+      for (int i = 0; i < list.length - 1; i++) {
+        expect(list[i].name.compareTo(list[i + 1].name) <= 0, isTrue);
+      }
+    });
+  });
