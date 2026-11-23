@@ -109,3 +109,6 @@ class _AddCustomExerciseDialogState extends State<AddCustomExerciseDialog> {
 
 
 // Rounded input borders
+
+
+// Form bug protection: SingleChildScrollView + Column verified
