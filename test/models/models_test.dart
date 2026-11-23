@@ -286,3 +286,15 @@ void main() {
       expect(pr.recordTypeLabel, 'Max Volume');
     });
   });
+
+
+  group('UserSettings - defaults', () {
+    test('defaults to kg, 60s rest, and dark theme', () {
+      const s = UserSettings();
+      expect(s.weightUnit, 'kg');
+      expect(s.defaultRestDurationSeconds, 60);
+      expect(s.themeMode, 'dark');
+      expect(s.vibrateOnRestEnd, isTrue);
+      expect(s.soundOnRestEnd, isTrue);
+    });
+  });
