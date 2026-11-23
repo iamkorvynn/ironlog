@@ -33,3 +33,6 @@ class WeeklyStats {
     );
   }
 }
+
+
+// Immutable model verified
