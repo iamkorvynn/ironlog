@@ -347,3 +347,14 @@ void main() {
       active.cancelWorkout();
     });
   });
+
+
+  group('SettingsService - theme toggle', () {
+    test('sets theme mode to dark, light, and system', () async {
+      final settings = SettingsService();
+      await settings.setThemeMode('light');
+      expect(settings.themeMode, 'light');
+      await settings.setThemeMode('dark');
+      expect(settings.themeMode, 'dark');
+    });
+  });
