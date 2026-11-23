@@ -242,3 +242,17 @@ void main() {
       expect(s.brzycki1Rm, closeTo(112.5, 0.1));
     });
   });
+
+
+  group('WorkoutExercise - completed sets counting', () {
+    test('counts only completed sets', () {
+      const we = WorkoutExercise(
+        id: '1', workoutId: '1', exerciseId: '1', exerciseName: 'Press', muscleGroup: 'Shoulders', orderIndex: 0,
+        sets: [
+          WorkoutSet(id: '1', workoutExerciseId: '1', setOrder: 1, weightKg: 50, reps: 10, isCompleted: true),
+          WorkoutSet(id: '2', workoutExerciseId: '1', setOrder: 2, weightKg: 50, reps: 8, isCompleted: false),
+        ],
+      );
+      expect(we.completedSetsCount, 1);
+    });
+  });
