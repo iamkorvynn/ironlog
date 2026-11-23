@@ -287,3 +287,13 @@ void main() {
       expect(limited.length, lessThanOrEqualTo(3));
     });
   });
+
+
+  group('DatabaseService - clearAllData preservation', () {
+    test('clearing all data retains the 12 built-in exercises', () async {
+      final db = DatabaseService();
+      await db.clearAllData();
+      final exercises = await db.getExercises();
+      expect(exercises.length, 12);
+    });
+  });
