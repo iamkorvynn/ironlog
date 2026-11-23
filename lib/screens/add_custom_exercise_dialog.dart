@@ -106,3 +106,6 @@ class _AddCustomExerciseDialogState extends State<AddCustomExerciseDialog> {
     );
   }
 }
+
+
+// Rounded input borders
