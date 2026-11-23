@@ -200,3 +200,13 @@ void main() {
       expect(find.text('Notification Sound'), findsOneWidget);
     });
   });
+
+
+  group('SettingsScreen - backup tile', () {
+    testWidgets('displays export backup and clear all data tiles', (tester) async {
+      await tester.pumpWidget(_wrap(const SettingsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text('Export Backup (JSON)'), findsOneWidget);
+      expect(find.text('Clear All Data'), findsOneWidget);
+    });
+  });
