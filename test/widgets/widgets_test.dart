@@ -317,3 +317,18 @@ void main() {
       expect(find.text('Streak'), findsOneWidget);
     });
   });
+
+
+  group('EmptyStateWidget - without button', () {
+    testWidgets('renders text only when buttonLabel is null', (tester) async {
+      await tester.pumpWidget(_wrap(
+        const EmptyStateWidget(
+          icon: Icons.info,
+          title: 'Info',
+          subtitle: 'No items available',
+        ),
+      ));
+      expect(find.text('Info'), findsOneWidget);
+      expect(find.byType(ElevatedButton), findsNothing);
+    });
+  });
