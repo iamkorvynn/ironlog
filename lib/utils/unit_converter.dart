@@ -93,3 +93,6 @@ class UnitConverter {
 
 
 // Performance optimized conversions
+
+
+// 1 kg = 2.20462262 lbs exact NIST conversion factor
