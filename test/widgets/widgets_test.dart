@@ -407,3 +407,11 @@ void main() {
       expect(find.byIcon(Icons.local_fire_department_rounded), findsOneWidget);
     });
   });
+
+
+  group('RestDayCard - icon', () {
+    testWidgets('displays bedtime recovery icon', (tester) async {
+      await tester.pumpWidget(_wrap(const RestDayCard(advice: 'Rest today.')));
+      expect(find.byIcon(Icons.bedtime_outlined), findsOneWidget);
+    });
+  });
