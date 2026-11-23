@@ -191,3 +191,12 @@ void main() {
       expect(find.text('Vibrate when Rest Ends'), findsOneWidget);
     });
   });
+
+
+  group('SettingsScreen - sound switch', () {
+    testWidgets('displays notification sound toggle', (tester) async {
+      await tester.pumpWidget(_wrap(const SettingsScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text('Notification Sound'), findsOneWidget);
+    });
+  });
