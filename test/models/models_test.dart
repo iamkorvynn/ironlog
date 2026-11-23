@@ -234,3 +234,11 @@ void main() {
       expect(e1.hashCode, equals(e2.hashCode));
     });
   });
+
+
+  group('WorkoutSet model - Brzycki calculation', () {
+    test('computes Brzycki 1RM on set', () {
+      const s = WorkoutSet(id: '1', workoutExerciseId: 'w', setOrder: 1, weightKg: 100, reps: 5);
+      expect(s.brzycki1Rm, closeTo(112.5, 0.1));
+    });
+  });
