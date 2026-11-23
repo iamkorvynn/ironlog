@@ -42,3 +42,6 @@ class VolumeChip extends StatelessWidget {
     );
   }
 }
+
+
+// High contrast amber styling
