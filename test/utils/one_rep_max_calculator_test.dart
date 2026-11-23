@@ -113,3 +113,13 @@ void main() {
     });
   });
 }
+
+
+  group('OneRepMaxCalculator - high reps', () {
+    test('calculates 15 reps cleanly', () {
+      expect(OneRepMaxCalculator.epley(100, 15), 150.0);
+    });
+    test('calculates 20 reps cleanly', () {
+      expect(OneRepMaxCalculator.epley(100, 20), closeTo(166.67, 0.01));
+    });
+  });
